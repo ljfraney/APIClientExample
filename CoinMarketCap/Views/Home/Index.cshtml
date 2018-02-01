@@ -1,0 +1,63 @@
+﻿@model CoinMarketCap.Models.CoinListViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <h1>Live Cryptocurrency Stats</h1>
+    <p>Page updated at @DateTime.Now.ToShortTimeString(). Reload in <span id="countdown">@Model.SecondsToReload</span> seconds.</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name (Symbol)</th>
+                <th>Price (USD)</th>
+                <th>1 Hour</th>
+                <th>1 Day</th>
+                <th>1 Week</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var coin in Model.Coins)
+            {
+                <tr>
+                    <td>
+                        @coin.Name (@coin.Symbol)
+                    </td>
+                    <td>
+                        $@coin.PriceUSD
+                    </td>
+                    <td class="@(double.Parse(coin.PercentChange1Hour) < 0 ? "text-danger" : "text-success")">
+                        @coin.PercentChange1Hour%
+                    </td>
+                    <td class="@(double.Parse(coin.PercentChange24Hour) < 0 ? "text-danger" : "text-success")">
+                        @coin.PercentChange24Hour%
+                    </td>
+                    <td class="@(double.Parse(coin.PercentChange7Day) < 0 ? "text-danger" : "text-success")">
+                        @coin.PercentChange7Day
+                    </td>
+                    <td>
+                        @coin.LastUpdated
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            let countDown = @Model.SecondsToReload;
+
+            setInterval(function () {
+                countDown--;
+                $('#countdown').html(countDown);
+                if (countDown < 1)
+                    window.location.href = window.location.href;
+            }, 1000);
+        });
+    </script>
+}
