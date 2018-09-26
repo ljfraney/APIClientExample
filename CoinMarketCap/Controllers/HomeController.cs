@@ -20,7 +20,7 @@ namespace CoinMarketCap.Controllers
 
             var httpResponseMessage = await HttpClient.GetAsync("https://api.coinmarketcap.com/v1/ticker");
 
-            if (true == false) //(!httpResponseMessage.IsSuccessStatusCode)
+            if (!httpResponseMessage.IsSuccessStatusCode)
                 throw new Exception("Unable to connect to CoinMarketCap.");
 
             var responseString = await httpResponseMessage.Content.ReadAsStringAsync();
